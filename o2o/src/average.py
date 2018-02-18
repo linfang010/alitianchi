@@ -4,43 +4,48 @@
 import pandas as pd
 
 
- 
-rf1 = pd.read_csv('result/rf_result1.csv')
-rf2 = pd.read_csv('result/rf_result2.csv')
-rf3 = pd.read_csv('result/rf_result3.csv')
-et1 = pd.read_csv('result/et_result1.csv')
-et2 = pd.read_csv('result/et_result2.csv')
-et3 = pd.read_csv('result/et_result3.csv')
-gb1 = pd.read_csv('result/gbdt_result1.csv')
-gb2 = pd.read_csv('result/gbdt_result2.csv')
-gb3 = pd.read_csv('result/gbdt_result3.csv')
-xgb1 = pd.read_csv('result/xgb_result1.csv')
-xgb2 = pd.read_csv('result/xgb_result2.csv')
-xgb3 = pd.read_csv('result/xgb_result3.csv')
-
-prob_matrix = pd.DataFrame()
-prob_matrix['rf1'] = rf1['prob']
-prob_matrix['rf2'] = rf2['prob']
-prob_matrix['rf3'] = rf3['prob']
-prob_matrix['et1'] = et1['prob']
-prob_matrix['et2'] = et2['prob']
-prob_matrix['et3'] = et3['prob']
-prob_matrix['gb1'] = gb1['prob']
-prob_matrix['gb2'] = gb2['prob']
-prob_matrix['gb3'] = gb3['prob']
-prob_matrix['xgb1'] = xgb1['prob']
-prob_matrix['xgb2'] = xgb2['prob']
-prob_matrix['xgb3'] = xgb3['prob']
-
-#corr = prob_matrix.corr(method='pearson')
-avg_prob = prob_matrix.mean(axis=1)
-data = pd.read_csv('rawdata/ccf_offline_stage1_test_sorted.csv')
-data['prob'] = avg_prob
-result_data = data[['User_id','Coupon_id','Date_received','prob']]
-result_data.to_csv('result/result.csv', index=False)
+def average():
+    r1 = pd.read_csv('temp/rf_result_875.csv')
+    r2 = pd.read_csv('temp/rf_result_875(1).csv')
+    r3 = pd.read_csv('temp/rf_result_617.csv')
+    r4 = pd.read_csv('temp/rf_result_282.csv')
+    r5 = pd.read_csv('temp/rf_result_352.csv')
+    r6 = pd.read_csv('temp/gbdt_result_351.csv')
+    r7 = pd.read_csv('temp/xgb_result_722.csv')
+    
+    
+    prob_matrix = pd.DataFrame()
+    prob_matrix['r1'] = r1['rank']
+    prob_matrix['r2'] = r2['rank']
+    prob_matrix['r3'] = r3['rank']
+    prob_matrix['r4'] = r4['rank']
+    prob_matrix['r5'] = r5['rank']
+    prob_matrix['r6'] = r6['rank']
+    prob_matrix['r7'] = r7['rank']
+    
+    #corr = prob_matrix.corr(method='pearson')
+    avg_prob = prob_matrix.mean(axis=1)
+    data = pd.read_csv('rawdata/ccf_offline_stage1_test_sorted.csv')
+    data['prob'] = avg_prob
+    result_data = data[['User_id','Coupon_id','Date_received','prob']]
+    result_data.to_csv('result/average_rank.csv', index=False)
 
 
+def rank():
+    
+    data = pd.read_csv('temp/rf_result_875_0.80055397.csv')
+    rank = data['prob'].rank(method='first')
+    max_rank = rank.max()
+    normalised_rank = rank.apply(lambda x: x/max_rank)
+    data['rank'] = normalised_rank
+    result_data = data[['User_id','Coupon_id','Date_received','rank']]
+    result_data.to_csv('temp/rf_result_875(1).csv', index=False)
+    
 
+if __name__ == '__main__':
+    
+    average()
+    #rank()
 
     
     
