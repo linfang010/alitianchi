@@ -1,3 +1,3 @@
 ## 赛题回顾
-[本赛题](https://tianchi.aliyun.com/getStart/introduction.htm?spm=5176.11165418.333.9.44c549ecQaf3W0&raceId=231573)
+[本赛题](https://tianchi.aliyun.com/getStart/introduction.htm?spm=5176.11165418.333.9.44c549ecQaf3W0&raceId=231573)提供了20130701到20140831这427天的用户申购赎回详细记录，用户基本信息记录，支付宝收益率记录和shibor利率记录，要求预测2014年9月这30天，每一天的总申购值和总赎回值。评价指标采用每天的相对误差计算一个得分，得分的具体公式没有公布，总之每天的预测值越接近真实值，评分越高。
 
