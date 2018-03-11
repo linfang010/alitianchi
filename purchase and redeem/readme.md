@@ -7,7 +7,7 @@
 ## 思路
 正好最近在学习Tensorflow，而时间序列预测又想到了rnn。因此决定用循环神经网络来做，参考了[seq2seq-signal-prediction ](https://github.com/guillaume-chevalier/seq2seq-signal-prediction)，感觉seq2seq模型很适合做本题的预测。Tensorflow中basic_rnn_seq2seq的结构如图所示：
 <img src="https://www.tensorflow.org/images/basic_seq2seq.png" />
-由于seq2seq模型常用来做机器翻译，因此图中的输入和输出都是字母。我们这里的输入和输出都是实数。模型由encoder和decoder两个rnn组成，encoder的输入为前面30天每一天的申购和赎回值以及其他一些特征，在最后一个节点把这些特征转换成一个hidden state传递给decoder。decoder的节点输出可以有多种选择(与encoder的输入相同，或者在训练的时候用前一天的期望值作为本次的输入，在预测中使用前一个节点的输出作为本次的输入)，输出则是后30天的申购和赎回值。训练数据采用后420天的数据，划分为13组，每一次迭代都用全部的数据。本题数据量太少了，训练一个不过拟合的seq2seq模型有点困难。我想这样是为什么很多参数选手都使用ARMIA这样的传统方法。
+由于seq2seq模型常用来做机器翻译，因此图中的输入和输出都是字母。我们这里的输入和输出都是实数。模型由encoder和decoder两个rnn组成，encoder的输入为前面30天每一天的申购和赎回值以及其他一些特征，在最后一个节点把这些特征转换成一个hidden state传递给decoder。decoder的节点输入可以有两种选择(与encoder的输入相同，或者在训练的时候用前一天的期望值作为本次的输入，在预测中使用前一个节点的输出作为本次的输入)，输出则是后30天的申购和赎回值。训练数据采用后420天的数据，划分为13组，每一次迭代都用全部的数据。本题数据量太少了，训练一个不过拟合的seq2seq模型有点困难。我想这样是为什么很多参数选手都使用ARMIA这样的传统方法。
 ## 特征
 目前没有专门做特征工程，对业务场景并不是很熟悉。模型的输入直接采用了user_balance_table.csv里面的16个申购赎回相关的汇总数据，mfd_day_share_interest.csv里面的2个余额宝收益率数据以及mfd_bank_shibor.csv里面的8个shibor利率数据(周末没有shibor，填0)，共26个特征作为输入。没有用到用户相关数据user_profile_table.csv。
 ## 调参
